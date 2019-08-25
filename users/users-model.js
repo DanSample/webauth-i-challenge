@@ -7,25 +7,25 @@ module.exports = {
   findById
 };
 
-const find = () => {
+function find() {
   return db('users').select('id', 'username', 'password');
-};
+}
 
-const findBy = filter => {
+function findBy(filter) {
   return db('users').where(filter);
-};
+}
 
-const add = user => {
+function add(user) {
   return db('users')
     .insert(user, 'id')
     .then(ids => {
       const [id] = ids;
       return findById(id);
     });
-};
+}
 
-const findById = id => {
+function findById(id) {
   return db('users')
     .where({ id })
     .first();
-};
+}
