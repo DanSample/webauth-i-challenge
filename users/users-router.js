@@ -6,7 +6,9 @@ const bcrypt = require('bcryptjs');
 
 const Users = require('./users-model');
 
-router.get('/users', async (req, res) => {
+const restricted = require('../middleware');
+
+router.get('/users', restricted, async (req, res) => {
   try {
     const users = await Users.find();
     res.status(200).json(users);
@@ -29,6 +31,10 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.post('/login', (req, res) => {});
+router.post('/login', restricted, (req, res) => {
+  let { username } = req.headers;
+  req.session.user = user;
+  res.status(200).json({ message: `Welcome ${username}! have a cookie...` });
+});
 
 module.exports = router;
